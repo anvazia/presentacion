@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="robots" content="noindex, nofollow">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Mando">
+<meta name="theme-color" content="#dceeff">
+<link rel="apple-touch-icon" href="../media/icon-180.png">
+<title>Mando · ¡Hola, soy Andy!</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bowlby+One&family=Inter:wght@500;700;800&display=swap">
+<style>
+/* Phone remote: two huge thumb buttons, the slide number and the speaker notes. Slush look. */
+:root{
+  --carbon:#000;--paper:#fff;--sky:#dceeff;--mint:#55db9c;--sun:#ffd731;--ember:#fb4903;--violet:#5c4ade;--lavender:#e9ccff;
+  --display:'Bowlby One',Impact,'Arial Black',sans-serif;
+  --body:'Inter',ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+  color-scheme:light;
+}
+*,*::before,*::after{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{height:100%;margin:0}
+body{background:var(--sky);color:var(--carbon);font-family:var(--body);font-weight:500;-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+.app{height:100%;display:flex;flex-direction:column;gap:12px;padding:max(14px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(14px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+header{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.brand{font:800 13px/1 var(--body);letter-spacing:.06em;text-transform:uppercase}
+.pill{border:1px solid var(--carbon);border-radius:1600px;background:var(--paper);padding:7px 12px;font:700 12px/1 var(--body);letter-spacing:.03em;text-transform:uppercase;white-space:nowrap}
+.pill.ok{background:var(--mint)}
+.pill.warn{background:var(--sun)}
+.pill.bad{background:var(--ember);color:var(--paper)}
+.info{display:flex;flex-direction:column;gap:10px;flex:1;min-height:0}
+.now{display:flex;align-items:baseline;gap:12px;min-width:0}
+.num{font-family:var(--display);font-size:56px;line-height:.9;font-variant-numeric:tabular-nums}
+.total{font-weight:800;font-size:18px;white-space:nowrap}
+.title{font-weight:800;font-size:18px;text-transform:uppercase;letter-spacing:.02em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+.step{font-size:13px;font-weight:700}
+.notes{flex:1;min-height:0;overflow:auto;background:var(--paper);border:1px solid var(--carbon);border-radius:22px;padding:14px 16px;font-size:17px;line-height:1.4;-webkit-user-select:text;user-select:text}
+.notes:empty::before{content:"Aquí aparecen tus notas de cada diapositiva.";opacity:.5}
+.pad{display:grid;grid-template-columns:1fr 2fr;gap:10px;height:min(34vh,240px)}
+.pad button{border:2px solid var(--carbon);border-radius:28px;font:400 26px/1 var(--display);text-transform:uppercase;color:var(--carbon);cursor:pointer;display:grid;place-items:center;gap:4px}
+.pad .prev{background:var(--paper)}
+.pad .next{background:var(--sun);font-size:34px}
+.pad button:active{transform:scale(.97)}
+.pad svg{width:42px;height:42px}
+.tools{display:flex;gap:8px;justify-content:center}
+.tools button{border:1px solid var(--carbon);border-radius:1600px;background:var(--paper);height:40px;padding:0 16px;font:700 12px/1 var(--body);letter-spacing:.03em;text-transform:uppercase;cursor:pointer}
+.join{flex:1;display:grid;align-content:center;gap:14px;text-align:center}
+.join h1{font-family:var(--display);font-weight:400;font-size:44px;line-height:.92;margin:0;text-transform:uppercase}
+.join input{font:400 34px/1 var(--display);letter-spacing:.2em;text-align:center;text-transform:uppercase;border:2px solid var(--carbon);border-radius:22px;padding:14px;width:100%;background:var(--paper);color:var(--carbon)}
+.join button{height:56px;border:2px solid var(--carbon);border-radius:1600px;background:var(--carbon);color:var(--paper);font:800 16px/1 var(--body);letter-spacing:.04em;text-transform:uppercase;cursor:pointer}
+.join p{margin:0;font-size:14px}
+:focus-visible{outline:3px solid var(--violet);outline-offset:3px}
+@media (orientation:landscape) and (max-height:500px){
+  .app{flex-direction:row;flex-wrap:wrap}
+  header{width:100%}
+  .info{flex:1;min-width:0;display:flex;flex-direction:column;gap:8px;height:calc(100% - 50px)}
+  .pad{width:48%;height:calc(100% - 50px);grid-template-columns:1fr 1.6fr}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <span class="brand">Mando · Hola, soy Andy</span>
+    <span class="pill" id="status">Sin conectar</span>
+  </header>
+
+  <section class="join" id="join">
+    <h1>Conecta tu mando</h1>
+    <p>Escribe el código que aparece en la pantalla del aula.</p>
+    <input id="code" inputmode="text" autocomplete="off" autocapitalize="characters" maxlength="8" placeholder="CÓDIGO" aria-label="Código de la pantalla">
+    <button type="button" id="connect">Conectar</button>
+  </section>
+
+  <div class="info" id="info" hidden>
+    <div class="now"><span class="num" id="num">–</span><span class="total" id="total"></span><span class="title" id="title"></span></div>
+    <div class="step" id="step"></div>
+    <div class="notes" id="notes"></div>
+    <div class="tools">
+      <button type="button" id="b-notes">Notas en pantalla</button>
+      <button type="button" id="b-change">Otro código</button>
+    </div>
+  </div>
+  <div class="pad" id="pad" hidden>
+    <button type="button" class="prev" id="prev" aria-label="Anterior"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7" fill="none" stroke="#000" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    <button type="button" class="next" id="next" aria-label="Siguiente">Siguiente<svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" fill="none" stroke="#000" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+  </div>
+</div>
+<script>
+const WS = 'wss://mando.andygabriel.com/room/';
+const $ = id => document.getElementById(id);
+const store = { get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }, set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} } };
+let me = store.get('mando-id');
+if (!me) { me = Array.from(crypto.getRandomValues(new Uint8Array(8)), b => b.toString(16).padStart(2, '0')).join(''); store.set('mando-id', me); }
+let ws = null, code = null, retry = 1000, screens = 0, denied = false, wakeLock = null;
+
+function setStatus(text, kind) { const s = $('status'); s.textContent = text; s.className = 'pill' + (kind ? ' ' + kind : ''); }
+function send(obj) { if (ws && ws.readyState === 1) { obj.from = me; ws.send(JSON.stringify(obj)); return true; } return false; }
+function showRemote(on) { $('join').hidden = on; $('info').hidden = !on; $('pad').hidden = !on; }
+
+function connect(c) {
+  code = c.toUpperCase().replace(/[^A-Z0-9]/g, '');
+  if (code.length < 4) { setStatus('Código incompleto', 'warn'); return; }
+  store.set('mando-code', code); denied = false; showRemote(true);
+  if (ws) { ws.onclose = null; ws.close(); }
+  setStatus('Conectando…', 'warn');
+  ws = new WebSocket(WS + code + '?role=remote');
+  ws.onopen = () => { retry = 1000; send({ type: 'hello' }); };
+  ws.onmessage = e => {
+    let m; try { m = JSON.parse(e.data); } catch (err) { return; }
+    if (m.type === 'presence') { screens = m.screens; paint(); }
+    else if (m.type === 'denied' && m.to === me) { denied = true; paint(); }
+    else if (m.type === 'state') {
+      if (m.owner && m.owner !== me) { denied = true; paint(); return; }
+      denied = false; screens = Math.max(screens, 1);
+      $('num').textContent = m.n; $('total').textContent = '/ ' + m.total; $('title').textContent = m.title || '';
+      $('step').textContent = m.steps > 1 ? 'Paso ' + m.step + ' de ' + m.steps : '';
+      $('notes').textContent = m.note || '';
+      paint();
+    }
+  };
+  ws.onclose = () => { ws = null; paint(); setTimeout(() => connect(code), retry); retry = Math.min(retry * 2, 8000); };
+  keepAwake();
+}
+function paint() {
+  if (!ws || ws.readyState !== 1) return setStatus('Reconectando…', 'warn');
+  if (denied) return setStatus('Otro teléfono es el mando', 'bad');
+  if (!screens) return setStatus('Pantalla no encontrada', 'warn');
+  setStatus('Conectado ✓', 'ok');
+}
+function nav(dir) {
+  if (send({ type: 'nav', dir })) { if (navigator.vibrate) navigator.vibrate(12); }
+}
+async function keepAwake() { try { if ('wakeLock' in navigator && !wakeLock) { wakeLock = await navigator.wakeLock.request('screen'); wakeLock.addEventListener('release', () => { wakeLock = null; }); } } catch (e) {} }
+document.addEventListener('visibilitychange', () => { if (!document.hidden) { keepAwake(); if (code && (!ws || ws.readyState > 1)) connect(code); } });
+
+$('next').addEventListener('click', () => nav(1));
+$('prev').addEventListener('click', () => nav(-1));
+$('b-notes').addEventListener('click', () => send({ type: 'notes' }));
+$('b-change').addEventListener('click', () => { if (ws) { ws.onclose = null; ws.close(); ws = null; } showRemote(false); setStatus('Sin conectar'); $('code').focus(); });
+$('connect').addEventListener('click', () => connect($('code').value));
+$('code').addEventListener('keydown', e => { if (e.key === 'Enter') connect($('code').value); });
+let sx = null;
+document.addEventListener('touchstart', e => { sx = e.touches[0].clientX; }, { passive: true });
+document.addEventListener('touchend', e => { if (sx == null || $('pad').hidden) return; const dx = e.changedTouches[0].clientX - sx; if (Math.abs(dx) > 60) nav(dx < 0 ? 1 : -1); sx = null; });
+
+const fromUrl = new URLSearchParams(location.search).get('c');
+const saved = fromUrl || store.get('mando-code');
+if (saved) { $('code').value = saved; connect(saved); } else showRemote(false);
+</script>
+</body>
+</html>

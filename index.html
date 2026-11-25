@@ -77,6 +77,8 @@ body{margin:0;background:var(--carbon);color:var(--carbon);font-family:var(--bod
 @keyframes pop{0%{opacity:0;transform:scale(.55) rotate(var(--r0,-8deg))}65%{opacity:1;transform:scale(1.05) rotate(calc(var(--r,0deg) + 2deg))}100%{opacity:1;transform:scale(1) rotate(var(--r,0deg))}}
 .rise{opacity:0}
 .rise.in{animation:rise .65s cubic-bezier(.22,1,.36,1) both;animation-delay:calc(var(--d,0ms) + var(--base,0ms))}
+/* a step that is not shown yet must not catch taps meant for the photo underneath */
+.pop:not(.in),.rise:not(.in){pointer-events:none}
 @keyframes rise{from{opacity:0;transform:translateY(60px)}to{opacity:1;transform:none}}
 .float{animation:float 4.5s ease-in-out infinite}
 .float.pop.in{animation:pop .7s cubic-bezier(.2,1.4,.4,1) both,float 4.5s ease-in-out infinite;
@@ -146,7 +148,12 @@ video.photo{object-fit:cover;background:var(--carbon)}
 #toast{position:fixed;left:50%;top:max(16px,env(safe-area-inset-top,0px));transform:translateX(-50%);z-index:60;max-width:min(92vw,620px);background:var(--carbon);color:var(--paper);border-radius:22px;padding:14px 20px;font:600 15px/1.35 var(--body);text-align:center}
 #ui button{height:44px;min-width:44px;border:1px solid var(--carbon);border-radius:1600px;background:var(--paper);font:700 13px/1 var(--body);letter-spacing:.03em;text-transform:uppercase;padding:0 14px;cursor:pointer;display:grid;place-items:center}
 #ui svg{width:18px;height:18px}
-#ui .pos{background:var(--carbon);color:var(--paper);font-variant-numeric:tabular-nums;cursor:default}
+#ui .pos{background:var(--carbon);color:var(--paper);font-variant-numeric:tabular-nums;cursor:default;white-space:nowrap}
+/* portrait phones: the bar spans the width with a gutter instead of running off the left edge */
+@media (max-width:440px){
+  #ui{left:max(10px,env(safe-area-inset-left,0px));right:max(10px,env(safe-area-inset-right,0px));justify-content:space-between;gap:4px}
+  #ui button{padding:0 10px}
+}
 #notes{position:absolute;left:0;right:0;bottom:0;background:var(--carbon);color:var(--paper);font-size:30px;line-height:1.3;padding:24px 60px;z-index:20}
 :focus-visible{outline:4px solid var(--violet);outline-offset:4px}
 @media (prefers-reduced-motion:reduce){

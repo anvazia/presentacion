@@ -607,14 +607,12 @@ const cap = s => String(s).charAt(0).toUpperCase() + String(s).slice(1);
 const QUIZ = [
   { q: '¿Cómo me llamo?', o: ['Antonio Pérez', 'Andy Gabriel Vázquez Perdomo', 'Alejandro García'], a: 1 },
   { q: '¿De dónde soy?', o: ['De México', 'De España', 'De Cuba'], a: 2 },
-  { q: '¿De qué ciudad soy?', o: ['Santiago de Cuba', 'La Habana', 'Santiago de Chile'], a: 0 },
   { q: '¿De qué colores es la bandera de Cuba?', o: ['Rojo, amarillo y verde', 'Azul, blanco y rojo', 'Azul y amarillo'], a: 1 },
   CONFIG.edad ? { q: '¿Cuántos años tengo?', o: shuffleAge(CONFIG.edad), a: -1, ans: Number(CONFIG.edad) ? ageLabel(Number(CONFIG.edad)) : String(CONFIG.edad) } : null,
   { q: '¿Qué estudié en Cuba?', o: ['Medicina', 'Química', 'Música'], a: 1 },
   { q: '¿Qué estudio ahora en Caen?', o: ['Artes del espectáculo', 'Matemáticas', 'Inglés'], a: 0 },
   { q: '¿Quién es mi jugador favorito?', o: ['Lionel Messi', 'Kylian Mbappé', 'Cristiano Ronaldo'], a: 2 },
   { q: '¿Cuál es mi baile favorito?', o: ['El ballet', 'El flamenco', 'El reguetón, el reparto y la salsa'], a: 2 },
-  { q: '¿Qué estoy construyendo?', o: ['Una casa', 'Mi marca personal como IA Partner', 'Un coche'], a: 1 },
   CONFIG.mascota ? { q: '¿Cuál es mi mascota preferida?', o: ['El gato', cap(CONFIG.mascota), 'El pez'], a: 1 } : null,
   CONFIG.cantante ? { q: '¿Quién es mi cantante favorito?', o: [CONFIG.cantante, 'Shakira', 'Bad Bunny'], a: 0 } : null,
   { q: '¿Cuál es mi película favorita?', o: ['Titanic', 'Coco', '¡No tengo!'], a: 2 }
